@@ -13,7 +13,7 @@ module.exports = {
         ]
     },
     devServer: {
-        contentBase: './src',
+        contentBase: './public',
         port: '9999'
     },
     plugins: [
