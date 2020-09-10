@@ -1,4 +1,5 @@
 export default {
+    DEFAULT_SOURCE_DIR: '/assets/',
     BOX_WIDTH: 400,
     BOX_HEIGHT: 300,
     DEFAULT_WIDTH: 800,

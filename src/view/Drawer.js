@@ -1,5 +1,7 @@
 import React,{useEffect} from "react";
 import config from '../config';
+import Source from "../component/source";
+import action from "../component/action";
 
 const Drawer = (props) => {
 
@@ -15,24 +17,10 @@ const Drawer = (props) => {
         []
     ];
 
-    const sources = {
-        pic: {}
-    };
-
     const items = {};
 
-    const zYun = {
-        walk: {
-            up: [],
-            down: [],
-            left: [],
-            right: []
-        }
-    };
-
     const init = async ()=> {
-        sources.pic['zyun'] = await pic('zyun');
-        sources.pic['zyun_m'] = await pic('zyun_m');
+        await Source.init();
         ctx = document.getElementById('drawer').getContext('2d');
         ctx.width = config.DEFAULT_WIDTH;
         ctx.height = config.DEFAULT_HEIGHT;
@@ -64,32 +52,21 @@ const Drawer = (props) => {
         ctx.setLineDash([]);
     };
 
-    const pic = (name)=> {
-        return new Promise(resolve => {
-            const img = new Image();
-            img.src = "/assets/"+name+".png";
-            img.onload = ()=> resolve(img)
-        })
-    };
-
     const item = ()=> {
         items['zyun'] = {
-            pos: {
-                x: 1,
-                y: 1
-            },
+            pos: {x: 1, y: 1, direction: 0},
+            state: 'walk',
             walk: {
                 step: 2,
-                direction: 0,
                 total: 4,
                 current: 0
             }
         };
         items['zyun_m'] = {
-            pos: {x: 3, y: 3},
+            pos: {x: 3, y: 3, direction: 2},
+            state: 'walk',
             walk: {
                 step: 4,
-                direction: 2,
                 total: 4,
                 current: 0
             }
@@ -108,21 +85,7 @@ const Drawer = (props) => {
         for(let index=0,len=itemsKeys.length;index<len;index++) {
             const key = itemsKeys[index];
             const item = items[key];
-            const now = Date.now();
-            const pic = sources.pic[key];
-            const {walk, pos} = item;
-            if (walk.last) {
-                if (now - walk.last > walk.step*50) {
-                    walk.current = walk.current === (walk.total - 1) ? 0 : walk.current + 1;
-                    walk.last = now;
-                }
-            } else {
-                walk.last = now
-            }
-            ctx.drawImage(pic, config.DEFAULT_ITEM_WIDTH*walk.current, config.DEFAULT_ITEM_HEIGHT*walk.direction,
-                config.DEFAULT_ITEM_WIDTH, config.DEFAULT_ITEM_HEIGHT,
-                config.DEFAULT_SECTION*pos.x + config.DEFAULT_SECTION/2 - config.DEFAULT_ITEM_WIDTH/2, config.DEFAULT_SECTION*pos.y,
-                config.DEFAULT_ITEM_WIDTH, config.DEFAULT_ITEM_HEIGHT);
+            action[item.state](ctx, item, key);
         }
     };
 
@@ -137,25 +100,6 @@ const Drawer = (props) => {
             runner = window.requestAnimationFrame(anim)
         };
         anim();
-    };
-
-    // const walk = (item, step, x, y, direction)=> {
-    //     let index = 0;
-    //     let total = 4;
-    //     animation(()=>{
-    //         if (index === total) index = 0;
-    //         ctx.clearRect(config.DEFAULT_SECTION*x,config.DEFAULT_SECTION*y,config.DEFAULT_SECTION,config.DEFAULT_SECTION);
-    //         // ctx.clearRect(0,0,config.DEFAULT_WIDTH,config.DEFAULT_HEIGHT);
-    //         ctx.drawImage(item, config.DEFAULT_ITEM_WIDTH*index, config.DEFAULT_ITEM_HEIGHT*direction,
-    //             config.DEFAULT_ITEM_WIDTH, config.DEFAULT_ITEM_HEIGHT,
-    //             config.DEFAULT_SECTION*x + config.DEFAULT_SECTION/2 - config.DEFAULT_ITEM_WIDTH/2, config.DEFAULT_SECTION*y,
-    //             config.DEFAULT_ITEM_WIDTH, config.DEFAULT_ITEM_HEIGHT);
-    //         index++;
-    //     }, step)
-    // };
-
-    const move = ()=> {
-
     };
 
     const handleClick = ()=> {
