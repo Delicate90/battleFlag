@@ -1,7 +1,7 @@
 import React,{useEffect} from "react";
 import config from '../config';
-import Source from "../component/source";
-import action from "../component/action";
+import Source from "../service/source";
+import {action, items, ACTION_STATE, ACTION_DIRECTION} from "../service/action";
 
 const Drawer = (props) => {
 
@@ -16,8 +16,6 @@ const Drawer = (props) => {
     const arr = [
         []
     ];
-
-    const items = {};
 
     const init = async ()=> {
         await Source.init();
@@ -53,26 +51,10 @@ const Drawer = (props) => {
     };
 
     const item = ()=> {
-        items['zyun'] = {
-            pos: {x: 1, y: 1, direction: 0},
-            state: 'walk',
-            walk: {
-                step: 2,
-                total: 4,
-                current: 0
-            }
-        };
-        items['zyun_m'] = {
-            pos: {x: 3, y: 3, direction: 2},
-            state: 'walk',
-            walk: {
-                step: 4,
-                total: 4,
-                current: 0
-            }
-        };
+        items.set('zyun', 1, 1, ACTION_STATE.WALK, ACTION_DIRECTION.LEFT);
+        items.set('zyun_m', 3,3, ACTION_STATE.WALK, ACTION_DIRECTION.LEFT);
         if (!runner) {
-            animation(run, 50)
+            animation(run, config.DEFAULT_ANIMATION_STEP)
         }
     };
 
@@ -81,12 +63,7 @@ const Drawer = (props) => {
     const run = ()=> {
         clean();
         back();
-        const itemsKeys = Object.keys(items);
-        for(let index=0,len=itemsKeys.length;index<len;index++) {
-            const key = itemsKeys[index];
-            const item = items[key];
-            action[item.state](ctx, item, key);
-        }
+        items.forEach((value,key,index)=>action(value.state)(ctx, value, key))
     };
 
     const animation = (func, diff)=> {
