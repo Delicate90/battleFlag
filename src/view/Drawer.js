@@ -1,7 +1,8 @@
 import React,{useEffect} from "react";
 import config from '../config';
 import Source from "../service/source";
-import {action, items, ACTION_STATE, ACTION_DIRECTION} from "../service/action";
+import {action, ACTION_STATE} from "../service/action";
+import {OBJECT_DIRECTION, items} from '../service/object';
 
 const Drawer = (props) => {
 
@@ -51,8 +52,8 @@ const Drawer = (props) => {
     };
 
     const item = ()=> {
-        items.set('zyun', 1, 1, ACTION_STATE.WALK, ACTION_DIRECTION.LEFT);
-        items.set('zyun_m', 3,3, ACTION_STATE.WALK, ACTION_DIRECTION.LEFT);
+        items.walk('zyun', 1, 1, OBJECT_DIRECTION.LEFT);
+        items.walk('zyun_m', 2,2, OBJECT_DIRECTION.LEFT);
         if (!runner) {
             animation(run, config.DEFAULT_ANIMATION_STEP)
         }
@@ -80,8 +81,7 @@ const Drawer = (props) => {
     };
 
     const handleClick = ()=> {
-        ctx.translate(-34, -34);
-        back();
+        items.move('zyun', 4, 0);
     }
 
     return (
