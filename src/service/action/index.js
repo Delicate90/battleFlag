@@ -1,7 +1,9 @@
 import walk from './walk'
 import move from './move'
+import stand from './stand'
+import attack from './attack'
 
-const _action = {walk,move};
+const _action = {walk,move,stand,attack};
 
 export const action = (state)=>{
     return _action[state]

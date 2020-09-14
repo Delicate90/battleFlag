@@ -9,7 +9,12 @@ export const load = (name)=> {
 };
 
 export const loadAll = async (names = {})=> {
-     const keys = Object.keys(names);
-     const res = await Promise.all(keys.map(k=>load(names[k])));
-     return res.reduce((prev,next,index)=>(prev[keys[index]]=next)&&prev, {});
+     const entries = Object.entries(names);
+     const res = await Promise.all(entries.map(([k,v])=>load(v.src)));
+     return res.reduce((prev,next,index)=>{
+         // (prev[names[keys[index]]]={source:next,width:next.width,height:next.height})&&prev
+         const [k,v] = entries[index];
+         prev[v.src] = {source: next, width: next.width/v.pages, height: next.height/v.direction, pages: v.pages, directions: v.direction};
+         return prev
+     }, {});
 };

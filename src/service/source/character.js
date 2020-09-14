@@ -1,24 +1,33 @@
+import {pic} from "../../source";
+
 export default {
     'zyun': {
         walk: {
-            frequency: 2,//运动频率
-            pages: 4,//画幅(0,1,2,3)
+            pic: pic.zyun,
+            frequency: 4,//运动频率
             init: 0,//初始画
-            direction: new Set([0,1,2,3])//方向
         },
         move: {
-            frequency: 2,//运动频率
-            pages: 4,//画幅(0,1,2,3)
+            pic: pic.zyun,
+            frequency: 4,//运动频率
             init: 0,//初始画
-            direction: new Set([0,1,2,3])//方向
-        }
+        },
+        stand: {
+            pic: pic.zyun,
+            frequency: 0,//运动频率
+            init: 0,//初始画
+        },
+        attack: {
+            pic: pic.zyun_atk,
+            frequency: 3,//运动频率
+            init: 0,//初始画
+        },
     },
     'zyun_m': {
         walk: {
+            pic: pic.zyun_m,
             frequency: 4,//运动频率
-            pages: 4,//画幅(0,1,2,3)
             init: 1,//初始画
-            direction: new Set([0,1,2,3])//方向
         }
     }
 }

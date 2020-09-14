@@ -82,6 +82,7 @@ const deserializeWays = (point, routes = [])=> {
     }
 };
 
+//格式化线路
 const formatWays = (sX, sY, routes)=> {
     const res = [];
     for (let i=0,len = routes.length;i<len;i++) {
@@ -107,7 +108,6 @@ const planing = (x1, y1, x2, y2) => {
         }
         ways = findWays(_point[0],_point[1], x2, y2, closed, opened, _point[2], ways, _point);
     }
-    remove(x1,y1);
     const routes = deserializeWays(endPoint);
     return formatWays(x1, y1, routes)
 };

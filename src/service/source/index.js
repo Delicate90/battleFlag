@@ -10,9 +10,10 @@ export default class Source {
     }
 
     static get(name, state) {
+        const res = character[name][state];
         return {
-            pic: Source.pic[name],
-            [state]: character[name][state]
+            pic: Source.pic[res.pic.src],
+            [state]: res
         }
     }
 }

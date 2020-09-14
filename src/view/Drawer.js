@@ -81,12 +81,17 @@ const Drawer = (props) => {
     };
 
     const handleClick = ()=> {
-        items.move('zyun', 4, 0);
+        items.move('zyun', 3, 2);
+    }
+
+    const handleAttack = ()=> {
+        items.attack('zyun', OBJECT_DIRECTION.LEFT);
     }
 
     return (
         <div style={{width: '100%', height: '100%'}}>
             <button onClick={handleClick}>start</button>
+            <button onClick={handleAttack}>attack</button>
             <canvas style={{margin: '100px 200px',border: '1px solid #000'}} id={'drawer'} width={config.BOX_WIDTH} height={config.BOX_HEIGHT}/>
         </div>
     )
